@@ -7,22 +7,22 @@ translator = googletrans.Translator()
 
 
 class BaseFrame:
-    def __init__(self, master):
+    def __init__(self, mainApp):
         def clip():
-            master.clipboard_clear()
-            master.clipboard_append(translator.translate(self.box.get(1.0, END), self.var.get()).text)
+            mainApp.clipboard_clear()
+            mainApp.clipboard_append(translator.translate(self.box.get(1.0, END), self.var.get()).text)
 
-        master = Frame(master)
-        frame1 = LabelFrame(master, text="Enter text: ")
-        frame1.pack()
-        self.box = Text(frame1, width=150, height=20)
+        mainApp = Frame(mainApp)
+        inputFrame = LabelFrame(mainApp, text="Enter text: ") # enter text to translate, auto-detects input language
+        inputFrame.pack()
+        self.box = Text(inputFrame, width=150, height=15)
         self.box.pack(fill=BOTH)
 
-        frame2 = LabelFrame(master, text="Select language:")
-        frame2.pack()
+        languageFrame = LabelFrame(mainApp, text="Select language:") # dropdown to select target language
+        languageFrame.pack()
         self.var = StringVar()
         self.var.set("es")
-        w = OptionMenu(frame2, self.var,
+        w = OptionMenu(languageFrame, self.var,
                                             "af",
                                             "sq",
                                             "ar",
@@ -89,17 +89,17 @@ class BaseFrame:
                                             "yi",)
         w.pack()
 
-        Button(master, text="translate", command=self.translate).pack()
+        Button(mainApp, text="translate", command=self.translate).pack()
 
-        frame3 = LabelFrame(master, text="Result:")
-        frame3.pack()
-        self.result = Text(frame3, width=150, height=20)
+        resultFrame = LabelFrame(mainApp, text="Result:") 
+        resultFrame.pack()
+        self.result = Text(resultFrame, width=150, height=15)
         self.result.pack(fill=BOTH)
 
-        Button(master, text="Copy!", command=clip).pack()
-        Button(master, text="clear", command=self.clear).pack()
+        Button(mainApp, text="Copy text", command=clip).pack() 
+        Button(mainApp, text="Clear All", command=self.clear).pack()
 
-        master.pack(fill=BOTH)
+        mainApp.pack(fill=BOTH)
 
     def translate(self):
         self.result.delete(1.0, END)
@@ -111,6 +111,6 @@ class BaseFrame:
 
 if __name__ == '__main__':
     root = Tk()
-    root.title("CS 352 Language Translator")
+    root.title("CS 352 Language Translator") #frame TEXT
     BaseFrame(root)
     root.mainloop()
